@@ -1,0 +1,131 @@
+:root {
+  --bg: #faf7f1;
+  --ink: #211e19;
+  --body: #38332b;
+  --muted: #6f6759;
+  --faint: #8a8172;
+  --line: #e6dfd1;
+  --border: #ddd5c6;
+  --sel: #e8e1d3;
+  --accent: #1e5f4b;
+}
+
+[data-theme='dark'] {
+  --bg: #1c1a15;
+  --ink: #ede7db;
+  --body: #c6bfb1;
+  --muted: #a19884;
+  --faint: #857d6d;
+  --line: #35312a;
+  --border: #443f35;
+  --sel: #3a362e;
+  --accent: color-mix(in oklab, #1e5f4b 78%, #f5efe3 22%);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  transition: background 0.3s ease;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--sel);
+}
+
+/* Buttons */
+a.btn-primary {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+a.btn-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+a.btn-outline {
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+a.btn-outline:hover {
+  border-color: var(--ink) !important;
+  transform: translateY(-1px);
+}
+
+button.theme-btn {
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+button.theme-btn:hover {
+  border-color: var(--ink) !important;
+  transform: translateY(-1px);
+}
+
+/* Hero entrance — staggered fade-up on load */
+@keyframes rise-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise > * {
+  animation: rise-up 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.rise > *:nth-child(2) { animation-delay: 0.08s; }
+.rise > *:nth-child(3) { animation-delay: 0.16s; }
+.rise > *:nth-child(4) { animation-delay: 0.24s; }
+.rise > *:nth-child(5) { animation-delay: 0.32s; }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.reveal.shown {
+  opacity: 1;
+  transform: none;
+}
+
+/* Availability dot */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(30, 95, 75, 0.35); }
+  70% { box-shadow: 0 0 0 9px rgba(30, 95, 75, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 95, 75, 0); }
+}
+
+.dot {
+  animation: pulse 2.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .row-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+}
