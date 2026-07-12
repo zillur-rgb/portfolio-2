@@ -286,8 +286,8 @@ export default function App() {
           >
             <a
               className="btn-primary"
-              href="/Zillur_Rahman_CV.pdf"
-              download="Zillur_Rahman_CV.pdf"
+              href="/CV_Zillur_Rahman_DE_BW.pdf"
+              download="CV_Zillur_Rahman_DE_BW.pdf"
               style={styles.btnPrimary}
             >
               {t.downloadCv}
