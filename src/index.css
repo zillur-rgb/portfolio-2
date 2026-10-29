@@ -1,25 +1,32 @@
+/* Palette: terminal green on a green-tinted neutral (matches the agent portfolio) */
 :root {
-  --bg: #faf7f1;
-  --ink: #211e19;
-  --body: #38332b;
-  --muted: #6f6759;
-  --faint: #8a8172;
-  --line: #e6dfd1;
-  --border: #ddd5c6;
-  --sel: #e8e1d3;
-  --accent: #1e5f4b;
+  --bg: #f4f6f2;
+  --ink: #1b2a21;
+  --body: #2c3d33;
+  --muted: #667a6d;
+  --faint: #6f8276;
+  --line: #d3dacf;
+  --border: #c5cec1;
+  --sel: #d3e6d3;
+  --accent: #0a7a45;
+  --on-accent: #f4f6f2;
+  --chip: #e6ebe3;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 }
 
 [data-theme='dark'] {
-  --bg: #1c1a15;
-  --ink: #ede7db;
-  --body: #c6bfb1;
-  --muted: #a19884;
-  --faint: #857d6d;
-  --line: #35312a;
-  --border: #443f35;
-  --sel: #3a362e;
-  --accent: color-mix(in oklab, #1e5f4b 78%, #f5efe3 22%);
+  --bg: #0b100d;
+  --ink: #e2eee6;
+  --body: #c3d2c8;
+  --muted: #8a9d91;
+  --faint: #738679;
+  --line: #1f2c24;
+  --border: #2a3a30;
+  --sel: #1f3a2b;
+  --accent: #4ade80;
+  --on-accent: #06210f;
+  --chip: #14211a;
 }
 
 html,
@@ -101,9 +108,9 @@ button.theme-btn:hover {
 
 /* Availability dot */
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(30, 95, 75, 0.35); }
-  70% { box-shadow: 0 0 0 9px rgba(30, 95, 75, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(30, 95, 75, 0); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent); }
+  70% { box-shadow: 0 0 0 9px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 
 .dot {
@@ -128,4 +135,188 @@ button.theme-btn:hover {
     grid-template-columns: 1fr !important;
     gap: 6px !important;
   }
+}
+
+/* ---------- Fixed ask-my-CV dock ---------- */
+.mono { font-family: var(--mono); }
+.dim { color: var(--muted); }
+.accent { color: var(--accent); }
+
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.dock-inner {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.dock-bar {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -8px 30px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.dock-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.dock-chips::-webkit-scrollbar { display: none; }
+
+.dock-chip {
+  flex: none;
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--chip);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.dock-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.dock-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dock-form input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--ink);
+  caret-color: var(--accent);
+  font-family: var(--mono);
+  font-size: 16px; /* 16px avoids iOS zoom on focus */
+  padding: 6px 0;
+}
+.dock-form input::placeholder { color: var(--faint); }
+
+.dock-send {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.dock-send:disabled { opacity: 0.4; cursor: default; }
+
+.dock-chip:focus-visible,
+.dock-send:focus-visible,
+.dock-actions button:focus-visible,
+.dock-jump:focus-visible,
+.dock-form input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Answer sheet: slides up from the bar */
+.dock-panel {
+  display: none;
+  pointer-events: auto;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 100%;
+  margin-bottom: 8px;
+  flex-direction: column;
+  max-height: min(46vh, 420px);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--ink) 16%, transparent);
+  animation: sheet-up 0.22s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.dock-panel.open { display: flex; }
+
+@keyframes sheet-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.dock-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+.dock-actions { display: flex; gap: 14px; }
+.dock-actions button {
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.dock-actions button:hover { color: var(--ink); }
+
+.dock-log {
+  overflow-y: auto;
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.dock-msg p { margin: 0; }
+.dock-q { font-size: 13px; color: var(--accent); margin-bottom: 4px !important; overflow-wrap: anywhere; }
+.dock-a {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.dock-a a { color: var(--accent); }
+
+.dock-jump {
+  margin-top: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.dock-jump:hover { border-color: var(--accent); }
+
+@media (max-width: 560px) {
+  .dock-inner { padding: 0; }
+  .dock-bar { border-radius: 14px 14px 0 0; border-left: 0; border-right: 0; }
+  .dock-panel { left: 8px; right: 8px; max-height: 50vh; }
 }

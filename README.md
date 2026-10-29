@@ -26,3 +26,16 @@ The CV download serves `public/Zillur_Rahman_CV.pdf` — replace that file to up
 3. Vercel auto-detects Vite; accept defaults and deploy.
 
 Or via CLI: `npx vercel` from this folder.
+
+## Ask-my-CV dock
+
+A fixed chat bar at the bottom of the page (`src/Agent.tsx`, logic in `src/agent.ts`). It answers from the same data as the page (`src/data.ts`) plus a few extra facts in `agent.ts` (skills, languages, AWS). Answers appear in a sheet above the bar; questions about experience, education or contact also get a "Show on page" button that scrolls to that section. It detects German vs English per question. No backend needed.
+
+## Before you push
+
+`node_modules/` was committed by accident. Remove it from git once:
+
+```bash
+git rm -r --cached node_modules
+git add .gitignore && git commit -m "Ignore node_modules"
+```

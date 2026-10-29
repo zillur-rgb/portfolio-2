@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { content, type Lang } from './data';
+import Agent from './Agent';
 
 const styles = {
   page: {
@@ -35,7 +36,7 @@ const styles = {
     alignItems: 'center',
     gap: 8,
     background: 'var(--accent)',
-    color: '#FAF7F1',
+    color: 'var(--on-accent)',
     textDecoration: 'none',
     fontWeight: 500,
     fontSize: 15,
@@ -157,6 +158,8 @@ export default function App() {
   }, [theme]);
 
   const t = content[lang];
+  const cvFile =
+    lang === 'de' ? '/Zillur_Rahman_CV_Lebenslauf.pdf' : '/Zillur_Rahman_CV_EN.pdf';
   const experience = useReveal();
   const educationReveal = useReveal();
   const contact = useReveal();
@@ -286,8 +289,8 @@ export default function App() {
           >
             <a
               className="btn-primary"
-              href="/CV_Zillur_Rahman_DE_BW.pdf"
-              download="CV_Zillur_Rahman_DE_BW.pdf"
+              href={cvFile}
+              download={cvFile.slice(1)}
               style={styles.btnPrimary}
             >
               {t.downloadCv}
@@ -322,6 +325,7 @@ export default function App() {
 
         {/* EXPERIENCE */}
         <section
+          id="experience"
           ref={experience.ref}
           className={experience.className}
           style={{ display: 'flex', flexDirection: 'column', gap: 40 }}
@@ -407,6 +411,7 @@ export default function App() {
 
         {/* EDUCATION */}
         <section
+          id="education"
           ref={educationReveal.ref}
           className={educationReveal.className}
           style={{ display: 'flex', flexDirection: 'column', gap: 32 }}
@@ -453,6 +458,7 @@ export default function App() {
 
         {/* CONTACT */}
         <section
+          id="contact"
           ref={contact.ref}
           className={contact.className}
           style={{
@@ -514,6 +520,8 @@ export default function App() {
           </p>
         </section>
       </main>
+      <div aria-hidden="true" style={{ height: 'var(--dock-h, 110px)' }} />
+      <Agent lang={lang} />
     </div>
   );
 }
