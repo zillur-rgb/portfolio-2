@@ -159,7 +159,7 @@ export default function App() {
 
   const t = content[lang];
   const cvFile =
-    lang === 'de' ? '/Zillur_Rahman_CV_Lebenslauf.pdf' : '/Zillur_Rahman_CV_EN.pdf';
+    lang === 'de' ? '/Zillur_Rahman_Lebenslauf.pdf' : '/Zillur_Rahman_CV_EN.pdf';
   const experience = useReveal();
   const educationReveal = useReveal();
   const contact = useReveal();
